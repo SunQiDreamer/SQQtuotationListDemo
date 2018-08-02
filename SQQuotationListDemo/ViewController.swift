@@ -14,12 +14,19 @@ class ViewController: UIViewController {
     
     let leftCellId = (NSStringFromClass(SQLeftCell.self as AnyClass) as NSString).components(separatedBy: ".").last
     let rightCellId = (NSStringFromClass(SQRightCell.self as AnyClass) as NSString).components(separatedBy: ".").last
+    let addOptionView = UIView(frame: CGRect(x: 0, y: 5 * 44, width: 375, height: 50))
+    var lastContentoffSetY: CGFloat = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        addOptionView.backgroundColor = UIColor.red
+        
+        view.addSubview(addOptionView)
+        
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -33,7 +40,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 20
+        return 5
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -51,7 +58,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
             
             (cell as! SQRightCell).customCell(data: indexPath.row)
         }
-    
+        
         return cell ?? UITableViewCell()
     }
     
@@ -61,6 +68,11 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         
         leftTableView.contentOffset.y = contentoffSetY
         rightTableView.contentOffset.y = contentoffSetY
+        
+        if scrollView == self.leftTableView {
+            addOptionView.frame = CGRect.offsetBy(addOptionView.frame)(dx: 0, dy: -contentoffSetY + lastContentoffSetY)
+        }
+        lastContentoffSetY = contentoffSetY
     }
     
     
